@@ -1,0 +1,42 @@
+{
+	"geode": "4.2.0",
+	"gd": {
+		"win": "2.2074",
+		"android": "2.2074",
+		"mac": "2.2074",
+		"ios": "2.2074"
+	},
+	"id": "prevter.smooth-scroll",
+	"name": "Smooth Scroll",
+	"version": "v1.0.0",
+	"developer": "prevter",
+	"description": "Makes mouse wheel butter smooth",
+	"tags": [ "enhancement", "interface" ],
+	"links": {
+		"source": "https://github.com/prevter/smooth-scroll",
+	},
+	"settings": {
+		"scroll-speed": {
+			"name": "Scroll Speed",
+			"description": "How fast the scroll will slow down",
+			"type": "float",
+			"default": 15,
+			"min": 1,
+			"max": 100,
+			"control": {
+				"slider": true
+			}
+		},
+		"scroll-sensitivity": {
+			"name": "Scroll Sensitivity",
+			"description": "Speed multiplier for the scroll",
+			"type": "float",
+			"default": 1.5,
+			"min": 0.1,
+			"max": 10,
+			"control": {
+				"slider": true
+			}
+		}
+	}
+}
