@@ -13,7 +13,7 @@
 	"description": "Makes mouse wheel butter smooth",
 	"tags": [ "enhancement", "interface" ],
 	"links": {
-		"source": "https://github.com/prevter/smooth-scroll",
+		"source": "https://github.com/prevter/smooth-scroll"
 	},
 	"settings": {
 		"scroll-speed": {
