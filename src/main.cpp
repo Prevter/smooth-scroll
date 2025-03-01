@@ -4,6 +4,7 @@
 using namespace geode::prelude;
 
 static double s_bufferedScrollY = 0;
+static double s_bufferedScrollX = 0;
 static bool s_isScrolling = false;
 static bool s_emulateScroll = false;
 
@@ -28,20 +29,32 @@ class $modify(ScrolledCCMouseDispatcher, CCMouseDispatcher) {
     }
 
     void updateScroll(float dt) {
-        auto buffered = s_bufferedScrollY;
-        auto lerped = buffered * dt * getSpeed();
+        // scroll y
+        auto bufferedY = s_bufferedScrollY;
+        auto lerpedY = bufferedY * dt * getSpeed();
+        s_bufferedScrollY -= lerpedY;
 
-        s_bufferedScrollY -= lerped;
+        // scroll x
+        auto bufferedX = s_bufferedScrollX;
+        auto lerpedX = bufferedX * dt * getSpeed();
+        s_bufferedScrollX -= lerpedX;
 
         // if we're really close to 0, just stop
-        if (std::abs(buffered) < 0.1f) {
-            lerped = buffered;
+        if (std::abs(bufferedY) < 0.1f) {
+            lerpedY = bufferedY;
             s_bufferedScrollY = 0;
+        }
+        if (std::abs(bufferedX) < 0.1f) {
+            lerpedX = bufferedX;
+            s_bufferedScrollX = 0;
+        }
+
+        if (s_bufferedScrollY == 0 && s_bufferedScrollX == 0) {
             this->stopSchedule();
         }
 
         s_emulateScroll = true;
-        this->dispatchScrollMSG(lerped, 0);
+        this->dispatchScrollMSG(lerpedY, lerpedX);
         s_emulateScroll = false;
     }
 
@@ -67,7 +80,7 @@ class $modify(ScrolledCCMouseDispatcher, CCMouseDispatcher) {
 
     bool dispatchScrollMSG(float y, float x) {
         // bypass the scroll if we're emulating it (or if it's horizontal for some reason)
-        if (s_emulateScroll || x != 0) {
+        if (s_emulateScroll) {
             return CCMouseDispatcher::dispatchScrollMSG(y, x);
         }
 
@@ -77,6 +90,7 @@ class $modify(ScrolledCCMouseDispatcher, CCMouseDispatcher) {
         }
 
         // buffer the scroll amount
+        s_bufferedScrollX += x * getSensitivity();
         s_bufferedScrollY += y * getSensitivity();
         this->startSchedule();
         return false;
