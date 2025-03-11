@@ -8,7 +8,7 @@
 	},
 	"id": "prevter.smooth-scroll",
 	"name": "Smooth Scroll",
-	"version": "v1.0.0",
+	"version": "v1.0.1",
 	"developer": "prevter",
 	"description": "Makes mouse wheel butter smooth",
 	"tags": [ "enhancement", "interface" ],

@@ -22,6 +22,15 @@ double getSensitivity() {
     return speed;
 }
 
+// for some specific mod compatibility reasons
+bool shouldPassthrough() {
+    static auto volumeControls = Loader::get()->getLoadedMod("hjfod.quick-volume-controls") != nullptr;
+    if (volumeControls) {
+        return CCKeyboardDispatcher::get()->getAltKeyPressed();
+    }
+    return false;
+}
+
 class $modify(ScrolledCCMouseDispatcher, CCMouseDispatcher) {
     static void onModify(auto& self) {
         // ideally we want other hooks to not trigger on the initial call
@@ -80,7 +89,7 @@ class $modify(ScrolledCCMouseDispatcher, CCMouseDispatcher) {
 
     bool dispatchScrollMSG(float y, float x) {
         // bypass the scroll if we're emulating it (or if it's horizontal for some reason)
-        if (s_emulateScroll) {
+        if (s_emulateScroll || shouldPassthrough()) {
             return CCMouseDispatcher::dispatchScrollMSG(y, x);
         }
 
